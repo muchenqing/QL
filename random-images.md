@@ -6,7 +6,7 @@
 
 <script>
 // 使用提供的API获取随机图片
-const apiUrl = 'https://cnmiw.com/api.php?sort=CDNrandom&type=json&num=10';
+const apiUrl = 'https://cnmiw.com/api.php?sort=CDNrandom';
 const container = document.getElementById('random-images-container');
 
 // 创建一个函数来获取图片
@@ -15,68 +15,82 @@ async function fetchRandomImages() {
     // 显示加载状态
     container.innerHTML = '<p style="text-align: center; font-size: 18px; color: #333;">正在加载随机图片...</p>';
     
-    const response = await fetch(apiUrl, {
-      method: 'GET',
-      headers: {
-        'Referer': 'https://weibo.com/'
-      }
-    });
-    
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    
-    const data = await response.json();
+    console.log('开始请求10张随机图片');
     
     // 清空容器
     container.innerHTML = '';
     
-    // 遍历图片数据并创建图片元素
-    data.forEach((image, index) => {
-      const imgWrapper = document.createElement('div');
-      imgWrapper.style.cssText = `
-        width: 220px;
-        height: 220px;
-        overflow: hidden;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-        transition: transform 0.3s ease;
-      `;
-      
-      imgWrapper.addEventListener('mouseenter', () => {
-        imgWrapper.style.transform = 'scale(1.05)';
-      });
-      
-      imgWrapper.addEventListener('mouseleave', () => {
-        imgWrapper.style.transform = 'scale(1)';
-      });
-      
-      const imgElement = document.createElement('img');
-      imgElement.src = image.url;
-      imgElement.alt = `Random Image ${index + 1}`;
-      imgElement.style.cssText = `
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: opacity 0.3s ease;
-      `;
-      
-      imgElement.addEventListener('load', () => {
-        imgElement.style.opacity = '1';
-      });
-      
-      imgElement.addEventListener('error', () => {
-        imgElement.src = 'https://via.placeholder.com/220x220?text=Image+Failed+to+Load';
-        imgElement.style.opacity = '1';
-      });
-      
-      imgElement.style.opacity = '0';
-      imgWrapper.appendChild(imgElement);
-      container.appendChild(imgWrapper);
+    // 直接获取10张图片，每张图片调用一次API
+    const imagePromises = Array.from({ length: 10 }, async (_, index) => {
+      try {
+        const imgWrapper = document.createElement('div');
+        imgWrapper.style.cssText = `
+          width: 220px;
+          height: 220px;
+          overflow: hidden;
+          border-radius: 10px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+          transition: transform 0.3s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: rgba(255, 255, 255, 0.5);
+        `;
+        
+        imgWrapper.addEventListener('mouseenter', () => {
+          imgWrapper.style.transform = 'scale(1.05)';
+        });
+        
+        imgWrapper.addEventListener('mouseleave', () => {
+          imgWrapper.style.transform = 'scale(1)';
+        });
+        
+        const imgElement = document.createElement('img');
+        imgElement.alt = `Random Image ${index + 1}`;
+        imgElement.style.cssText = `
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: opacity 0.3s ease;
+        `;
+        
+        // 添加加载和错误事件
+        imgElement.addEventListener('load', () => {
+          console.log('图片加载成功:', imgElement.src);
+          imgElement.style.opacity = '1';
+        });
+        
+        imgElement.addEventListener('error', (e) => {
+          console.error('图片加载失败:', imgElement.src, e);
+          imgElement.src = 'https://via.placeholder.com/220x220?text=Image+Failed+to+Load';
+          imgElement.style.opacity = '1';
+        });
+        
+        // 设置初始透明度
+        imgElement.style.opacity = '0';
+        
+        // 生成带时间戳的URL，避免缓存
+        const imageUrl = `${apiUrl}?t=${Date.now()}_${index}`;
+        imgElement.src = imageUrl;
+        
+        imgWrapper.appendChild(imgElement);
+        container.appendChild(imgWrapper);
+        
+        return imgElement;
+      } catch (error) {
+        console.error(`获取第${index + 1}张图片时发生错误:`, error);
+        return null;
+      }
     });
+    
+    // 等待所有图片请求完成
+    await Promise.all(imagePromises);
+    
+    console.log('图片渲染完成');
+    
   } catch (error) {
-    console.error('Error fetching random images:', error);
-    container.innerHTML = '<p style="text-align: center; font-size: 18px; color: #ff4444;">加载图片失败，请稍后重试。</p>';
+    console.error('获取图片时发生错误:', error);
+    container.innerHTML = `<p style="text-align: center; font-size: 18px; color: #ff4444;">加载图片失败: ${error.message}</p>`;
   }
 }
 
