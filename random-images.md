@@ -20,8 +20,8 @@ async function fetchRandomImages() {
     // 清空容器
     container.innerHTML = '';
     
-    // 直接获取10张图片，每张图片调用一次API
-    const imagePromises = Array.from({ length: 10 }, async (_, index) => {
+    // 直接获取10张图片，每张图片使用一个iframe
+    for (let i = 0; i < 10; i++) {
       try {
         const imgWrapper = document.createElement('div');
         imgWrapper.style.cssText = `
@@ -31,9 +31,7 @@ async function fetchRandomImages() {
           border-radius: 10px;
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
           transition: transform 0.3s ease;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+          position: relative;
           background-color: rgba(255, 255, 255, 0.5);
         `;
         
@@ -45,46 +43,71 @@ async function fetchRandomImages() {
           imgWrapper.style.transform = 'scale(1)';
         });
         
-        const imgElement = document.createElement('img');
-        imgElement.alt = `Random Image ${index + 1}`;
-        imgElement.style.cssText = `
+        // 生成带时间戳的URL，避免缓存
+        const imageUrl = `${apiUrl}?t=${Date.now()}_${i}`;
+        console.log(`创建图片${i+1}的iframe:`, imageUrl);
+        
+        // 使用iframe来加载图片，避免跨域问题
+        const iframe = document.createElement('iframe');
+        iframe.src = imageUrl;
+        iframe.style.cssText = `
           width: 100%;
           height: 100%;
-          object-fit: cover;
+          border: none;
+          display: block;
+          opacity: 0;
           transition: opacity 0.3s ease;
         `;
         
-        // 添加加载和错误事件
-        imgElement.addEventListener('load', () => {
-          console.log('图片加载成功:', imgElement.src);
-          imgElement.style.opacity = '1';
-        });
+        // 监听iframe加载事件
+        iframe.onload = function() {
+          console.log(`iframe${i+1}加载成功`);
+          iframe.style.opacity = '1';
+        };
         
-        imgElement.addEventListener('error', (e) => {
-          console.error('图片加载失败:', imgElement.src, e);
-          imgElement.src = 'https://via.placeholder.com/220x220?text=Image+Failed+to+Load';
-          imgElement.style.opacity = '1';
-        });
+        iframe.onerror = function(e) {
+          console.error(`iframe${i+1}加载失败:`, e);
+          // 如果iframe加载失败，显示占位图
+          iframe.style.display = 'none';
+          const placeholder = document.createElement('img');
+          placeholder.src = 'https://via.placeholder.com/220x220?text=Image+Failed+to+Load';
+          placeholder.style.cssText = `
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          `;
+          imgWrapper.appendChild(placeholder);
+        };
         
-        // 设置初始透明度
-        imgElement.style.opacity = '0';
-        
-        // 生成带时间戳的URL，避免缓存
-        const imageUrl = `${apiUrl}?t=${Date.now()}_${index}`;
-        imgElement.src = imageUrl;
-        
-        imgWrapper.appendChild(imgElement);
+        imgWrapper.appendChild(iframe);
         container.appendChild(imgWrapper);
         
-        return imgElement;
       } catch (error) {
-        console.error(`获取第${index + 1}张图片时发生错误:`, error);
-        return null;
+        console.error(`获取第${i + 1}张图片时发生错误:`, error);
+        // 创建一个错误占位符
+        const errorWrapper = document.createElement('div');
+        errorWrapper.style.cssText = `
+          width: 220px;
+          height: 220px;
+          overflow: hidden;
+          border-radius: 10px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+          background-color: rgba(255, 255, 255, 0.5);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        `;
+        const errorText = document.createElement('p');
+        errorText.textContent = '加载失败';
+        errorText.style.cssText = `
+          color: #ff4444;
+          font-size: 16px;
+          margin: 0;
+        `;
+        errorWrapper.appendChild(errorText);
+        container.appendChild(errorWrapper);
       }
-    });
-    
-    // 等待所有图片请求完成
-    await Promise.all(imagePromises);
+    }
     
     console.log('图片渲染完成');
     
