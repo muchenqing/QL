@@ -14,19 +14,16 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text:'首页',link:'/'},
-      { text: 'MirlKoi', items:[
-        {text:'MirlKoi',link:'https://cnmiw.com/'},
-        {text:'随机图（全部）',link:'https://cnmiw.com/api.php?sort=CDNrandom'},
-        {text:'随机图（无色图）',link:''},
-        {text:'精选图',link:''},
-        {text:'随机色图',link:''},
-      ] },
+      { text: 'MirlKoi', link:'https://cnmiw.com/'},
       { text: '视频/番', items:[
         {text:'哔哩哔哩',link:'https://www.bilibili.com/'},
         {text:'Web Emby(在线番剧) ',link:'https://cnmiw.com/acg/Daisysg.html'},
       ] },
-      { text: '自动生成侧边栏', link: '/front-end/react/' },
-      { text: '自动生成侧边栏2', link: '/backend/rabbitmq' },
+      { text: '学习', items:[
+        {text: '前端React',link:'https://docs.bugdesigner.cn/docs/front-end/react.html'},
+        {text:'Python语法',link:'https://docs.bugdesigner.cn/docs/python/base.html'},
+      ] },
+      { text: '小说', link: '/novels/' },
       
     ],
 
