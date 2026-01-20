@@ -16,7 +16,7 @@ export default defineConfig({
       { text:'首页',link:'/'},
       { text: 'MirlKoi', items:[
         {text:'MirlKoi',link:'https://cnmiw.com/'},
-        {text:'随机图（全部）',link:'/random-images'},
+        {text:'随机图（全部）',link:'https://cnmiw.com/api.php?sort=CDNrandom'},
         {text:'随机图（无色图）',link:''},
         {text:'精选图',link:''},
         {text:'随机色图',link:''},
@@ -27,7 +27,6 @@ export default defineConfig({
       ] },
       { text: '自动生成侧边栏', link: '/front-end/react/' },
       { text: '自动生成侧边栏2', link: '/backend/rabbitmq' },
-      { text: '随机图片', link: '/random-images' },
       
     ],
 
