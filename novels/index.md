@@ -76,6 +76,14 @@
 // 小说数据，从页面中的特殊标签读取
 const novels = [];
 
+// DOM元素
+const novelList = document.getElementById('novel-list');
+const readingArea = document.getElementById('reading-area');
+const novelTitle = document.getElementById('novel-title');
+const backBtn = document.getElementById('back-btn');
+const chapterSelect = document.getElementById('chapter-select');
+const novelContent = document.getElementById('novel-content');
+
 // 解析小说内容的函数
 function parseNovelContent(content) {
   // 移除文件开头的广告信息
@@ -184,58 +192,6 @@ function initNovelList() {
       <img src="${novel.cover}" alt="${novel.title}" style="width: 100%; height: 300px; object-fit: cover;">
       <div style="padding: 15px;">
         <h3 style="margin: 0 0 10px 0; font-size: 18px; color: #333; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${novel.title}</h3>
-        <p style="margin: 0 0 15px 0; font-size: 14px; color: #666;">作者：${novel.author}</p>
-        <p style="margin: 0 0 15px 0; font-size: 14px; color: #666;">章节数：${novel.chapters.length}</p>
-        <button class="read-btn" data-novel-id="${novel.id}" style="width: 100%; padding: 10px; background-color: rgba(255, 255, 255, 0.9); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 5px; cursor: pointer; transition: all 0.3s ease;">开始阅读</button>
-      </div>
-    `;
-    
-    novelList.appendChild(novelCard);
-  });
-  
-  // 添加阅读按钮事件监听
-  document.querySelectorAll('.read-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const novelId = parseInt(e.target.dataset.novelId);
-      openNovel(novelId);
-    });
-  });
-}
-
-// DOM元素
-const novelList = document.getElementById('novel-list');
-const readingArea = document.getElementById('reading-area');
-const novelTitle = document.getElementById('novel-title');
-const backBtn = document.getElementById('back-btn');
-const chapterSelect = document.getElementById('chapter-select');
-const novelContent = document.getElementById('novel-content');
-
-// 初始化小说列表
-function initNovelList() {
-  novels.forEach(novel => {
-    const novelCard = document.createElement('div');
-    novelCard.style.cssText = `
-      width: 200px;
-      background-color: rgba(255, 255, 255, 0.9);
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-      overflow: hidden;
-      transition: transform 0.3s ease;
-      cursor: pointer;
-    `;
-    
-    novelCard.addEventListener('mouseenter', () => {
-      novelCard.style.transform = 'translateY(-5px)';
-    });
-    
-    novelCard.addEventListener('mouseleave', () => {
-      novelCard.style.transform = 'translateY(0)';
-    });
-    
-    novelCard.innerHTML = `
-      <img src="${novel.cover}" alt="${novel.title}" style="width: 100%; height: 300px; object-fit: cover;">
-      <div style="padding: 15px;">
-        <h3 style="margin: 0 0 10px 0; font-size: 18px; color: #333;">${novel.title}</h3>
         <p style="margin: 0 0 15px 0; font-size: 14px; color: #666;">作者：${novel.author}</p>
         <p style="margin: 0 0 15px 0; font-size: 14px; color: #666;">章节数：${novel.chapters.length}</p>
         <button class="read-btn" data-novel-id="${novel.id}" style="width: 100%; padding: 10px; background-color: rgba(255, 255, 255, 0.9); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 5px; cursor: pointer; transition: all 0.3s ease;">开始阅读</button>
