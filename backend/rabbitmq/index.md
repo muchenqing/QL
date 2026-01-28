@@ -1,4 +1,22 @@
 # Ubuntu 核心操作命令大全（详细注释+可直接复制示例）
+
+<style>
+:root {
+  --vp-c-bg: #ffffff;
+  --vp-c-bg-alt: #f9f9f9;
+  --vp-c-text-1: #333333;
+  --vp-c-text-2: #666666;
+  --vp-c-text-3: #999999;
+}
+
+body {
+  background-color: #ffffff !important;
+}
+
+.vp-doc {
+  background-color: #ffffff !important;
+}
+</style>
 适配版本：Ubuntu 18.04/20.04/22.04/24.04
 说明：普通用户执行需加 sudo 提权，root 用户可直接执行；注释以 # 标注，示例贴合实际使用场景
 
