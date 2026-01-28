@@ -23,7 +23,7 @@ export default defineConfig({
         {text: '前端React',link:'https://docs.bugdesigner.cn/docs/front-end/react.html'},
         {text:'Python语法',link:'https://docs.bugdesigner.cn/docs/python/base.html'},
       ] },
-      { text: '自动生成侧边栏2', link: '/backend/rabbitmq' },
+      { text: 'Ubuntu', link: '/backend/rabbitmq' },
       
     ],
 
