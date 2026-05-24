@@ -1,29 +1,22 @@
 ---
-# https://vitepress.dev/reference/default-theme-home-page
 layout: home
 
 hero:
   name: "沐辰的简易仓库"
-  text: "仓库"
-  tagline: In My Barren Land,You Are My Only White Rose
+  text: "知识库"
+  tagline: 记录学习历程，沉淀技术积累
   actions:
     - theme: brand
-      text: 哔哩哔哩
-      link: https://www.bilibili.com/
-    - theme: brand
-      text: MirlKoi
-      link: https://cnmiw.com/
-    - theme: brand
-      text: Web Emby（在线番剧) 
-      link: https://cnmiw.com/acg/Daisysg.html
+      text: 开始学习
+      link: /backend/rabbitmq
     - theme: alt
-      text: API 实例
-      link: /api-examples
+      text: GitHub
+      link: https://github.com/muchenqing
 
 features:
-  - title: 第一个目标学懂Ubuntu
-    details: 特征1的详细描述
-  - title: 第二个目标学懂python
-    details: 特征2的详细描述
+  - title: 学懂 Ubuntu
+    details: 用户管理、软件包、权限系统、进程网络 —— 从零系统掌握 Linux 服务器运维核心
+  - title: 学懂 Python
+    details: 从基础语法到进阶实战，构建完整的 Python 编程知识体系
 ---
 

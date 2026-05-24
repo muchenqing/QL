@@ -3,8 +3,8 @@ import { set_sidebar } from "./utils/auto_sidebar.mjs";	// 改成自己的路径
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  base:"/QL/",
-  head: [["link", { rel: "icon", href: "/QL//qing.jpg" }]],
+  base:"/",
+  head: [["link", { rel: "icon", href: "/qing.jpg" }]],
   title: "沐辰的简易仓库",
   description: "A VitePress Site",
   themeConfig: {
@@ -27,7 +27,10 @@ export default defineConfig({
       
     ],
 
-    sidebar: false, // 关闭侧边栏
+    sidebar: {
+      '/backend/': { base: '/backend/', items: set_sidebar('backend') },
+      '/front-end/': { base: '/front-end/', items: set_sidebar('front-end') },
+    },
     aside: "left", // 设置右侧侧边栏在左侧显示
     socialLinks: [
       { icon: 'github', link: 'https://github.com/muchenqing' }
